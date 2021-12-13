@@ -11,11 +11,6 @@ class TaskController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
-    {
-        return view('tasks.index');
-    }
-
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -29,5 +24,12 @@ class TaskController extends Controller
         return redirect('/tasks');
     }
 
-    
+    public function index(Request $request)
+    {
+        $tasks = Task::where('user_id', $request->user()->id)->get();
+
+        return view('tasks.index', [
+            'tasks' => $tasks,
+        ]);
+    }
 }
